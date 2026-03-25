@@ -44,13 +44,28 @@ var Utrecht = L.marker([52.0907, 5.1214]).bindPopup('Utrecht'),
     lelystad = L.marker([52.5186, 5.4697]).bindPopup('Lelystad'),
     assen = L.marker([52.9921, 6.5645]).bindPopup('Assen');
 
-var Steden = L.layerGroup([Utrecht, DenHaag, DenBosch, Haarlem, Zwolle, Leeuwarden, Groningen, Maastricht, middelburg, lelystad, assen]);
+var Hoofdsteden = L.layerGroup([Utrecht, DenHaag, DenBosch, Haarlem, Zwolle, Leeuwarden, Groningen, Maastricht, middelburg, lelystad, assen]);
+//#endregion
+
+//#region Layer 3
+map.locate({ setView: true, maxZoom: 16 });
+
+// Success handler
+map.on('locationfound', function(e) {
+  L.marker(e.latlng)
+    .addTo(map)
+    .bindPopup("You are here!")
+    .openPopup();
+
+  // Show accuracy circle
+  L.circle(e.latlng, { radius: e.accuracy }).addTo(map);
+});
 //#endregion
 
 //#region MAP INITIALIZATION
 // de kaart centreren op Nederland
 var netherlandsBounds = L.latLngBounds(L.latLng(50.7, 3.3), L.latLng(53.7, 7.3));
-var map = L.map('map', {maxBounds: netherlandsBounds, maxBoundsViscosity: 1.00, layers: [baseLayer,Provincies]});
+var map = L.map('map', {maxBounds: netherlandsBounds, maxBoundsViscosity: 1.00, layers: [baseLayer, Hoofdsteden]});
 map.fitBounds(netherlandsBounds);
 //#endregion
 
@@ -71,8 +86,8 @@ var baseMaps = {
     "CycleMap": cycleMap
 };
 var overlayMaps = {
-    "provincies": Provincies,
-    "steden": Steden
+    "hoofdsteden": Hoofdsteden,
+    "provincies": Provincies
 };
 
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
