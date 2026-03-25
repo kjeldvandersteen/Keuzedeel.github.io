@@ -48,18 +48,19 @@ var Hoofdsteden = L.layerGroup([Utrecht, DenHaag, DenBosch, Haarlem, Zwolle, Lee
 //#endregion
 
 //#region Layer 3
-map.locate({ setView: true, maxZoom: 16 });
 
 // Success handler
 map.on('locationfound', function(e) {
-  L.marker(e.latlng)
+    L.marker(e.latlng)
     .addTo(map)
     .bindPopup("You are here!")
     .openPopup();
-
-  // Show accuracy circle
-  L.circle(e.latlng, { radius: e.accuracy }).addTo(map);
+    
+    // Show accuracy circle
+    L.circle(e.latlng, { radius: e.accuracy }).addTo(map);
 });
+
+map.locate({ setView: true, maxZoom: 16 });
 //#endregion
 
 //#region MAP INITIALIZATION
